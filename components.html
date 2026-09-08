@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activity 2 — Two Broken Components</title>
+<style>
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: #f6f5f2; color: #1c1c1c; line-height: 1.5; }
+  .card { max-width: 620px; margin: 28px auto; background: #fff; border: 1px solid #d4d4d4;
+          border-radius: 10px; padding: 24px 28px 30px; }
+  h1 { font-size: 20px; margin: 0 0 2px; }
+  h2 { font-size: 15px; margin: 22px 0 8px; }
+  .lede { margin: 0 0 18px; color: #4a4a4a; font-size: 14px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .chip { padding: 7px 14px; border: 1px solid #17356b; border-radius: 999px; font-size: 14px;
+          cursor: pointer; user-select: none; }
+  .chip.on { background: #17356b; color: #fff; }
+  .count { font-size: 14px; color: #4a4a4a; margin: 0 0 10px; }
+  ul { margin: 0; padding-left: 18px; }
+  li { padding: 2px 0; font-size: 15px; }
+  #status-area { min-height: 1px; }
+</style>
+</head>
+<body>
+
+<main class="card">
+  <h1>Course finder</h1>
+  <p class="lede">Two components in here are broken. Fix them, and prove it with the reader on.</p>
+
+  <!-- COMPONENT 1 — the fake button -->
+  <h2>Filter by level</h2>
+  <div class="chips" id="chips">
+    <div class="chip on" data-level="all"    onclick="setFilter(this)">All</div>
+    <div class="chip"    data-level="intro"  onclick="setFilter(this)">Introductory</div>
+    <div class="chip"    data-level="inter"  onclick="setFilter(this)">Intermediate</div>
+    <div class="chip"    data-level="adv"    onclick="setFilter(this)">Advanced</div>
+    <div class="chip"    data-level="postgrad" onclick="setFilter(this)">Postgraduate</div>
+  </div>
+
+  <!-- COMPONENT 2 — the silent counter -->
+  <p class="count" id="count">6 courses</p>
+  <ul id="results"></ul>
+  <div id="status-area"></div>
+
+</main>
+
+<script>
+  var COURSES = [
+    { name: 'Intro to HTML',            level: 'intro' },
+    { name: 'CSS Layout Foundations',   level: 'intro' },
+    { name: 'JavaScript Essentials',    level: 'inter' },
+    { name: 'Working with APIs',        level: 'inter' },
+    { name: 'Advanced Frontend',        level: 'adv'   },
+    { name: 'Frontend Performance',     level: 'adv'   }
+  ];
+
+  var current = 'all';
+
+  function setFilter(el) {
+    current = el.getAttribute('data-level');
+    var chips = document.querySelectorAll('.chip');
+    for (var i = 0; i < chips.length; i++) chips[i].classList.remove('on');
+    el.classList.add('on');
+    render();
+  }
+
+  function render() {
+    var shown = COURSES.filter(function (c) {
+      return current === 'all' || c.level === current;
+    });
+
+    var list = document.getElementById('results');
+    list.innerHTML = '';
+    shown.forEach(function (c) {
+      var li = document.createElement('li');
+      li.textContent = c.name;
+      list.appendChild(li);
+    });
+
+    // The count updates on screen and says nothing to a screen reader.
+    document.getElementById('count').textContent =
+      shown.length + (shown.length === 1 ? ' course' : ' courses');
+
+    // The empty state is created and filled in one step.
+    var area = document.getElementById('status-area');
+    area.innerHTML = '';
+    if (shown.length === 0) {
+      var msg = document.createElement('div');
+      msg.textContent = 'No courses match that filter.';
+      area.appendChild(msg);
+    }
+  }
+
+  render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ALU Short Course — Registration</title>
+<style>
+  :root { --ink: #1c1c1c; --line: #d4d4d4; --brand: #17356b; --err: #b3261e; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: #f6f5f2; color: var(--ink); line-height: 1.5; }
+  .card { max-width: 560px; margin: 32px auto; background: #fff; border: 1px solid var(--line);
+          border-radius: 10px; padding: 28px 30px 34px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .lede { margin: 0 0 22px; color: #4a4a4a; font-size: 14px; }
+  .field { margin-bottom: 18px; }
+  .field-name { display: block; font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  input[type="text"], input[type="password"], select {
+      width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px;
+      font-size: 15px; font-family: inherit; background: #fff; }
+  /* Focus styling was removed during a redesign. */
+  :focus { outline: none; }
+  .error { color: var(--err); font-size: 13px; margin: 5px 0 0; }
+  .radios span { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .radios div { padding: 3px 0; font-size: 15px; }
+  .terms { font-size: 14px; margin: 20px 0 6px; }
+  .btn { display: inline-block; margin-top: 18px; padding: 11px 22px; background: var(--brand);
+         color: #fff; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer;
+         user-select: none; }
+  .help { font-size: 13px; color: #4a4a4a; }
+</style>
+</head>
+<body>
+
+<main class="card">
+  <h1>Register for the short course</h1>
+  <p class="lede">Advanced Frontend Development · February intake · Kigali campus</p>
+
+  <form id="registration" action="/register" method="post">
+
+    <!-- 1 -->
+    <div class="field">
+      <input type="text" id="fullname" name="fullname" placeholder="Full name">
+    </div>
+
+    <!-- 2 -->
+    <div class="field">
+      <span class="field-name">Phone number</span>
+      <input type="text" id="phone" name="phone">
+      <p class="help">Include the country code.</p>
+    </div>
+
+    <!-- 3 -->
+    <div class="field">
+      <label for="email">Email address</label>
+      <input type="text" id="email" name="email">
+      <!-- 4 -->
+      <p class="error" id="email-error">Enter an email address in the form name@example.com</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="field">
+      <label for="dob">Date of birth</label>
+      <input type="text" id="dob" name="dob" tabindex="3" placeholder="DD / MM / YYYY">
+    </div>
+
+    <!-- 6 -->
+    <div class="field radios">
+      <span>Preferred campus</span>
+      <div><input type="radio" id="c-kigali" name="campus" value="kigali" checked>
+           <label for="c-kigali">Kigali</label></div>
+      <div><input type="radio" id="c-nairobi" name="campus" value="nairobi">
+           <label for="c-nairobi">Nairobi</label></div>
+      <div><input type="radio" id="c-online" name="campus" value="online">
+           <label for="c-online">Online</label></div>
+    </div>
+
+    <div class="field">
+      <label for="cohort">Cohort</label>
+      <select id="cohort" name="cohort">
+        <option>February</option>
+        <option>June</option>
+        <option>September</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="password">Choose a password</label>
+      <input type="password" id="password" name="password">
+    </div>
+
+    <p class="terms">
+      <input type="checkbox" id="terms" name="terms">
+      <label for="terms" style="display:inline">I accept the course terms</label>
+    </p>
+
+    <!-- 7 -->
+    <div class="btn" onclick="submitForm()">Create account</div>
+
+  </form>
+</main>
+
+<script>
+  // 8
+  var dob = document.getElementById('dob');
+  var trapped = false;
+  dob.addEventListener('input', function () { trapped = true; });
+  dob.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { trapped = false; document.getElementById('password').focus(); return; }
+    if (trapped && e.key === 'Tab') { e.preventDefault(); dob.focus(); }
+  });
+
+  function submitForm() {
+    document.getElementById('registration').submit();
+  }
+</script>
+
+</body>
+</html>
